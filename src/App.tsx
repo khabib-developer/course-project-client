@@ -1,25 +1,36 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter as Router } from "react-router-dom";
+import Loader from "./componenets/Loader";
+import {
+  SnackbarError,
+  SnackbarInfo,
+  SnackbarSuccess,
+  SnackbarWarning,
+} from "./componenets/snackBar";
+import { Pages } from "./routes";
+import { ThemeProvider, createTheme } from "@mui/material/styles";
+import { useTypedSelector } from "./hooks/redux/useSelectedTypes";
+import { switchTheme } from "./interfaces";
 
 function App() {
+  const app = useTypedSelector((s) => s.app);
+
+  const darkTheme = createTheme({
+    palette: {
+      mode: app.darkTheme ? switchTheme.dark : switchTheme.light,
+    },
+  });
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ThemeProvider theme={darkTheme}>
+      <Router>
+        <Loader />
+        <SnackbarError />
+        <SnackbarInfo />
+        <SnackbarWarning />
+        <SnackbarSuccess />
+        <Pages />
+      </Router>
+    </ThemeProvider>
   );
 }
 
