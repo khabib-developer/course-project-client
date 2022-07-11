@@ -78,9 +78,10 @@ export const EditCollection: React.FC<{
       );
 
       if (updatedCollection) {
+        console.log({ ...updatedCollection });
+
         actions.setSuccess(text.success[app.language]);
         setcollection({ ...updatedCollection, AdditionalField });
-
         actions.setUser({
           ...app.user!,
           Collections: [
@@ -97,12 +98,13 @@ export const EditCollection: React.FC<{
   return (
     <Box component={"form"}>
       <Grid container justifyContent="center" py={5}>
-        <Grid container item spacing={3} lg={8} md={8} sm={10} xs={11}>
-          <Grid item lg={6} pt={3}>
+        <Grid container item spacing={3} justifyContent="center" md={8} sm={10}>
+          <Grid item container md={8} sm={10}>
             <UpoadFile update={false} image={image} handleFile={setimage} />
           </Grid>
-          <Grid item lg={6} pt={3}>
-            <FormControl variant="standard" sx={{ m: 1, width: "100%" }}>
+
+          <Grid item lg={8} md={8} sm={10} xs={11}>
+            <FormControl variant="standard">
               <InputLabel id="demo-simple-select-standard-label">
                 {text.collectionTheme[app.language]}
               </InputLabel>
@@ -120,6 +122,7 @@ export const EditCollection: React.FC<{
                 ))}
               </Select>
             </FormControl>
+
             <TextField
               id="filled-basic"
               hiddenLabel
@@ -131,7 +134,8 @@ export const EditCollection: React.FC<{
               variant="standard"
             />
           </Grid>
-          <Grid item lg={12} pt={3}>
+
+          <Grid item container justifyContent="center">
             {app.darkTheme ? (
               // eslint-disable-next-line react/jsx-pascal-case
               <Editor_dark_theme
@@ -148,41 +152,54 @@ export const EditCollection: React.FC<{
               />
             )}
           </Grid>
-          {dynamicfields.sort().map((field: any, i: number) => (
-            <Grid
-              item
-              lg={12}
-              key={i}
-              container
-              pt={3}
-              justifyContent="space-between"
-            >
-              <Grid item xs={4}>
-                {field.name}
-              </Grid>
-              <Grid item xs={5}>
-                {
-                  text.typeFields.find((f: any) => f.en === field.type)![
-                    app.language
-                  ]
-                }
-              </Grid>
-              <Grid item xs={2}>
-                <Button
-                  color="error"
-                  sx={{ width: "100%", mx: 2 }}
-                  onClick={() =>
-                    setdynamicfields((prev: any) => [
-                      ...prev.filter((f: any) => f.id !== field.id),
-                    ])
+
+          <Grid item container spacing={0} justifyContent="center">
+            {dynamicfields.sort().map((field: any, i: number) => (
+              <Grid
+                item
+                lg={12}
+                xs={8}
+                key={i}
+                container
+                pt={3}
+                justifyContent="space-between"
+              >
+                <Grid item xs={4}>
+                  {field.name}
+                </Grid>
+                <Grid item xs={4}>
+                  {
+                    text.typeFields.find((f: any) => f.en === field.type)![
+                      app.language
+                    ]
                   }
-                >
-                  {text.delete[app.language]}
-                </Button>
+                </Grid>
+                <Grid item xs={4}>
+                  <Button
+                    color="error"
+                    size="small"
+                    sx={{ width: "100%", mx: 2 }}
+                    onClick={() =>
+                      setdynamicfields((prev: any) => [
+                        ...prev.filter((f: any) => f.id !== field.id),
+                      ])
+                    }
+                  >
+                    {text.delete[app.language]}
+                  </Button>
+                </Grid>
               </Grid>
-            </Grid>
-          ))}
-          <Grid item lg={12} container pt={3} justifyContent="space-between">
+            ))}
+          </Grid>
+
+          <Grid
+            item
+            lg={12}
+            xs={9}
+            container
+            pt={3}
+            justifyContent="space-between"
+          >
             <Grid item xs={4}>
               <TextField
                 id="filled-basic"
@@ -200,7 +217,7 @@ export const EditCollection: React.FC<{
                 variant="standard"
               />
             </Grid>
-            <Grid item xs={5}>
+            <Grid item xs={3}>
               <Select
                 variant="standard"
                 sx={{ width: "100%" }}
@@ -219,7 +236,7 @@ export const EditCollection: React.FC<{
                 ))}
               </Select>
             </Grid>
-            <Grid item xs={2}>
+            <Grid item xs={4}>
               <Button
                 color="inherit"
                 sx={{ width: "100%", mx: 2 }}
@@ -245,6 +262,7 @@ export const EditCollection: React.FC<{
               </Button>
             </Grid>
           </Grid>
+
           <Grid item lg={12} pt={3}>
             <Button
               type="submit"

@@ -72,12 +72,14 @@ export const setUser = (payload: IUser | null) => {
   };
 };
 
-export const setSearch = (payload: string, navigate: any, location: any) => {
-  if (payload !== "") {
-    window.scrollTo({ top: 0 });
-    navigate(`${location.pathname}?${payload}`);
-  }
+export const setRefreshComment = (payload: any) => {
+  return {
+    type: AppActionTypes.APP_Refresh_COMMENT,
+    payload,
+  };
+};
 
+export const setSearch = (payload: string) => {
   return {
     type: AppActionTypes.APP_SEARCH,
     payload,

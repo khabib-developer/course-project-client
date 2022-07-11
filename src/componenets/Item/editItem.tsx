@@ -40,9 +40,9 @@ export const EditItem: React.FC<{
 
   useEffect(() => {
     if (item) {
-      console.log(item);
       setadditionalfields(toEdit(AdditionalField, item?.AdditionalFieldsValue));
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [item]);
 
   const handleUpdate = async (event: FormEvent<EventTarget>): Promise<void> => {
@@ -179,7 +179,7 @@ export const EditItem: React.FC<{
                     label={field.key}
                     required
                     type={field.type}
-                    className="pt-3"
+                    className="mt-3"
                     value={field.value}
                     onChange={(e: any) =>
                       setadditionalfields((prev: any) => [
@@ -212,7 +212,7 @@ export const EditItem: React.FC<{
                     label={field.key}
                     required
                     type={field.type}
-                    className="pt-3"
+                    className="mt-3"
                     defaultValue={new Date(field.value)
                       .toISOString()
                       .slice(0, 10)}

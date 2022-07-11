@@ -6,6 +6,7 @@ interface appState {
   token: string | null;
   user: null | IUser;
   loading: boolean;
+  refreshComments: any;
   tab: number;
   search: string;
   likedItems: any;
@@ -18,13 +19,17 @@ interface appState {
 }
 
 const initialState: appState = {
-  server: "http://localhost:4000",
+  server:
+    process.env.NODE_ENV! === "development"
+      ? "http://localhost:4000"
+      : "https://metafor.uz",
   token: localStorage.getItem("course-project-token"),
   user: null,
   likedItems: {},
   darkTheme: Boolean(localStorage.getItem("darktheme")),
   loading: false,
   search: "",
+  refreshComments: null,
   language:
     (localStorage.getItem("language") as
       | switchlanguage.en
@@ -47,6 +52,9 @@ export const appReducer = (
       return { ...state, token: action.payload };
     case AppActionTypes.APP_LOADING:
       return { ...state, loading: action.payload };
+
+    case AppActionTypes.APP_Refresh_COMMENT:
+      return { ...state, refreshComments: action.payload };
 
     case AppActionTypes.APP_LIKED_ITEMS:
       return { ...state, likedItems: action.payload };

@@ -186,4 +186,24 @@ export const text = {
     en: "Cloud tags",
     ru: "Облако тэгов",
   },
+  results: {
+    en: "Results",
+    ru: "Полученные результаты",
+  },
+  notResults: {
+    en: "Not results",
+    ru: "Нет результатов",
+  },
+  admin: {
+    en: "Admin",
+    ru: "Админ",
+  },
+  registrationTime: {
+    en: "Registration Time",
+    ru: "Время регистрации",
+  },
+  status: {
+    en: "Status",
+    ru: "Статус",
+  },
 };

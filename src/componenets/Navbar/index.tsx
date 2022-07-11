@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import * as React from "react";
 import { styled, alpha } from "@mui/material/styles";
 import AppBar from "@mui/material/AppBar";
@@ -20,17 +21,16 @@ import { Button } from "@mui/material";
 import { switchlanguage } from "../../interfaces";
 import { text } from "../../text";
 import { Logout, useAuth } from "../../hooks/auth";
+import { useState } from "react";
 
-const Search = styled("div")(({ theme }) => ({
+const Search = styled("form")(({ theme }) => ({
   position: "relative",
   borderRadius: theme.shape.borderRadius,
   backgroundColor: alpha(theme.palette.common.white, 0.15),
   "&:hover": {
     backgroundColor: alpha(theme.palette.common.white, 0.25),
   },
-  marginRight: theme.spacing(2),
   marginLeft: 0,
-  width: "100%",
   [theme.breakpoints.up("sm")]: {
     marginLeft: theme.spacing(3),
     width: "50%",
@@ -69,21 +69,16 @@ export default function Navbar() {
   const actions = useActions();
   const navigate = useNavigate();
 
+  const [open, setOpen] = useState<boolean>(false);
+
   const handleSearch = (event: any) => {
-    actions.setSearch(event.target.value, navigate, location);
+    actions.setSearch(event.target.value);
   };
 
-  // React.useEffect(() => {
-  //   navigate(`${location.pathname}?${app.search}`);
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [app.search]);
-
-  React.useEffect(() => {
-    if (location.search !== "") {
-      return;
-    }
-    actions.setSearch("", navigate, location);
-  }, [location]);
+  const handleSubmit = (event: any) => {
+    event.preventDefault();
+    navigate(`/1?${app.search}`);
+  };
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -93,12 +88,12 @@ export default function Navbar() {
             variant="h6"
             noWrap
             component="div"
-            sx={{ display: { xs: "none", sm: "block" } }}
+            sx={{ cursor: "pointer" }}
             onClick={() => navigate("/")}
           >
-            Collection Site
+            Logo
           </Typography>
-          <Search>
+          <Search onSubmit={handleSubmit}>
             <SearchIconWrapper>
               <SearchIcon />
             </SearchIconWrapper>
@@ -110,15 +105,45 @@ export default function Navbar() {
             />
           </Search>
 
-          <Box sx={{ display: { xs: "none", md: "flex" } }}>
+          <Box
+            sx={{
+              bgcolor: { xs: "background.default", md: "transparent" },
+              position: { xs: "absolute", md: "relative" },
+              top: { xs: 56, md: 0 },
+              left: { xs: 0, md: "auto" },
+              width: { xs: "100%", md: "auto" },
+              height: { xs: `calc(100vh - 56px)`, md: "auto" },
+              p: { md: 0, xs: 3 },
+              display: { xs: open ? "flex" : "none", md: "flex" },
+              flexDirection: { xs: "column", md: "row" },
+              alignItems: "center",
+              zIndex: { xs: "10000", md: "auto" },
+            }}
+          >
+            {app.user && app.user.admin && (
+              <Button
+                sx={{
+                  px: 2,
+                  border: "1px solid",
+                  borderColor: "inherit",
+                }}
+                size="small"
+                color="inherit"
+                onClick={() => navigate("/admin")}
+              >
+                {text.admin[app.language]}
+              </Button>
+            )}
             {app.user && (
               <Button
                 sx={{
                   px: 2,
+                  mt: { xs: 2, md: 0 },
                   mx: 2,
                   border: "1px solid",
                   borderColor: "inherit",
                 }}
+                size="small"
                 color="inherit"
                 onClick={() => navigate("/create")}
               >
@@ -178,7 +203,7 @@ export default function Navbar() {
               size="large"
               aria-label="show more"
               aria-haspopup="true"
-              // onClick={handleMobileMenuOpen}
+              onClick={() => setOpen((prev: boolean) => !prev)}
               color="inherit"
             >
               <MoreIcon />
@@ -186,6 +211,16 @@ export default function Navbar() {
           </Box>
         </Toolbar>
       </AppBar>
+      {/* <Box
+        sx={{
+          position: "absolute",
+          display: { xs: "flex", md: "none" },
+          top: 64,
+          right: 10,
+        }}
+      >
+        mobile
+      </Box> */}
     </Box>
   );
 }

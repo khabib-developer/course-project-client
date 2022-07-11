@@ -81,11 +81,15 @@ export const CollectionPage = () => {
 
   useEffect(() => {
     if (collection) {
-      setitem(
-        collection.Items.find(
-          (item) => item.id === Number(location.hash.slice(1))
-        )
-      );
+      if (location.hash !== "") {
+        setitem(
+          collection.Items.find(
+            (item) => item.id === Number(location.hash.slice(1))
+          )
+        );
+        return;
+      }
+      setitem(undefined);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [collection, location]);
@@ -209,7 +213,7 @@ export const CollectionPage = () => {
     >
       <Navbar />
       <Grid container justifyContent="center" rowSpacing={5} py={5} mt={5}>
-        {app.user && app.user.id === collection.UserId && (
+        {app.user && (app.user.id === collection.UserId || app.user.admin) && (
           <Grid item container lg={8} md={8} sm={10} xs={11}>
             <IconButton
               onClick={() => setedit(false)}
@@ -229,7 +233,7 @@ export const CollectionPage = () => {
           </Grid>
         )}
 
-        {app.user && app.user.id === collection.UserId && edit ? (
+        {app.user && edit ? (
           <EditCollection
             setcollection={setcollection}
             collection={collection}
@@ -281,6 +285,7 @@ export const CollectionPage = () => {
                 handleLike={handleLike}
                 likeData={app.likedItems[item.id]}
                 item={item}
+                AdditionalField={collection.AdditionalField}
               />
             </Grid>
           ))}

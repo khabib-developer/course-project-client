@@ -27,7 +27,14 @@ export const TagCoud: React.FC = () => {
             {text.cloudTags[language]}
           </Typography>
           <Grid item container spacing={2} xs={12}>
-            <Box sx={{ display: "flex", pl: 2 }}>
+            <Box
+              sx={{
+                display: "flex",
+                pl: 2,
+                columnGap: "5px",
+                flexWrap: "wrap",
+              }}
+            >
               {tags.map((tag, i) => (
                 <TagItem tag={tag} key={i} />
               ))}

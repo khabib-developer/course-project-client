@@ -12,7 +12,13 @@ export enum AppActionTypes {
   APP_TAB = "AOO_TAB",
   APP_LIKED_ITEMS = "APP_LIKED_ITEMS",
   APP_SEARCH = "APP_SEARCH",
+  APP_Refresh_COMMENT = "APP_Refresh_COMMENT",
   APP_LANGUAGE = "APP_LANGUAGE",
+}
+
+export interface AppRefreshCommentAction {
+  type: AppActionTypes.APP_Refresh_COMMENT;
+  payload: any;
 }
 
 export interface AppSearchAction {
@@ -82,6 +88,7 @@ export type AppAction =
   | AppTabAction
   | AppTokenAction
   | AppWarningAction
+  | AppRefreshCommentAction
   | AppLoadingAction
   | AppErrorAction
   | AppInfoAction

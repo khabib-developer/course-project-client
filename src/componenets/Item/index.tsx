@@ -5,8 +5,6 @@ import Typography from "@mui/material/Typography";
 import { Box, CardActionArea, CardActions, IconButton } from "@mui/material";
 import { IItem } from "../../interfaces";
 import { useTypedSelector } from "../../hooks/redux/useSelectedTypes";
-import { text } from "../../text";
-import { useEffect, useState } from "react";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import ModeCommentIcon from "@mui/icons-material/ModeComment";
 import { useNavigate } from "react-router-dom";
@@ -16,34 +14,10 @@ export const Item: React.FC<{
   item: IItem;
   likeData: any;
   handleLike: any;
-}> = ({ item, likeData, handleLike }) => {
-  const { server, user } = useTypedSelector((s) => s.app);
+  AdditionalField: any;
+}> = ({ item, likeData, handleLike, AdditionalField }) => {
+  const { server } = useTypedSelector((s) => s.app);
   const navigate = useNavigate();
-  const [field1, setfield1] = useState<any>(null);
-  const [field2, setfield2] = useState<any>(null);
-
-  useEffect(() => {
-    if (item.additionalFields) {
-      const f1 = JSON.parse(item.additionalFields).find(
-        (field: any) => field.type === text.typeFields[1].en
-      );
-      const f2 = JSON.parse(item.additionalFields).find(
-        (field: any) => field.type === text.typeFields[2].en
-      );
-      setfield1(
-        f1 && {
-          key: f1.name,
-          value: f1.value,
-        }
-      );
-      setfield2(
-        f2 && {
-          key: f2.name,
-          value: f2.value,
-        }
-      );
-    }
-  }, [item.Likes, item.additionalFields, user?.id]);
 
   return (
     <Card>
@@ -59,14 +33,15 @@ export const Item: React.FC<{
             {item.name}
           </Typography>
 
-          {field1 && (
+          {AdditionalField?.string_1 && item.AdditionalFieldsValue?.string_1 && (
             <Typography variant="body2" color="text.secondary">
-              {field1.key}: {field1.value}
+              {AdditionalField.string_1}: {item.AdditionalFieldsValue.string_1}
             </Typography>
           )}
-          {field2 && (
+
+          {AdditionalField?.date_1 && item.AdditionalFieldsValue?.date_1 && (
             <Typography variant="body2" color="text.secondary">
-              {field2.key}: {field2.value}
+              {AdditionalField.date_1}: {item.AdditionalFieldsValue.date_1}
             </Typography>
           )}
         </CardContent>

@@ -88,7 +88,7 @@ export const CreateCollection = () => {
       <Navbar />
       <Box component={"form"}>
         <Grid container justifyContent="center" py={5} mt={5}>
-          <Grid item lg={6} md={8}>
+          <Grid item lg={6} md={8} xs={10}>
             <Typography component="h1" variant="h3">
               {text.createCollection[app.language]}
             </Typography>
@@ -150,6 +150,7 @@ export const CreateCollection = () => {
                 item
                 lg={12}
                 key={i}
+                xs={8}
                 container
                 pt={3}
                 justifyContent="space-between"
@@ -157,14 +158,14 @@ export const CreateCollection = () => {
                 <Grid item xs={4}>
                   {field.name}
                 </Grid>
-                <Grid item xs={5}>
+                <Grid item xs={3}>
                   {
                     text.typeFields.find((f: any) => f.en === field.type)![
                       app.language
                     ]
                   }
                 </Grid>
-                <Grid item xs={2}>
+                <Grid item xs={4}>
                   <Button
                     color="error"
                     sx={{ width: "100%", mx: 2 }}
@@ -179,7 +180,14 @@ export const CreateCollection = () => {
                 </Grid>
               </Grid>
             ))}
-            <Grid item lg={12} container pt={3} justifyContent="space-between">
+            <Grid
+              item
+              lg={12}
+              xs={12}
+              container
+              pt={3}
+              justifyContent="space-between"
+            >
               <Grid item xs={4}>
                 <TextField
                   id="filled-basic"
@@ -197,7 +205,7 @@ export const CreateCollection = () => {
                   variant="standard"
                 />
               </Grid>
-              <Grid item xs={5}>
+              <Grid item xs={3}>
                 <Select
                   variant="standard"
                   sx={{ width: "100%" }}
@@ -216,7 +224,7 @@ export const CreateCollection = () => {
                   ))}
                 </Select>
               </Grid>
-              <Grid item xs={2}>
+              <Grid item xs={4}>
                 <Button
                   color="inherit"
                   sx={{ width: "100%", mx: 2 }}

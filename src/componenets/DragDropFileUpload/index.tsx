@@ -42,8 +42,11 @@ export const UpoadFile: React.FC<{
 
   if (image && !update)
     return (
-      <div className="w-100 text-center" style={{ position: "relative" }}>
-        <div className="" style={{ position: "absolute" }}>
+      <div
+        className="d-flex justify-content-center"
+        style={{ position: "relative" }}
+      >
+        <div className="" style={{ position: "absolute", top: 10, left: 0 }}>
           <DeleteIcon
             onClick={handleDelete}
             style={{ cursor: "pointer" }}

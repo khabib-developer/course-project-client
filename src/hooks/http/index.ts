@@ -15,7 +15,8 @@ export const useHttp = () => {
       method = "GET",
       body: any = null,
       headers: any = {},
-      file = false
+      file = false,
+      loader: boolean = true
     ) => {
       try {
         let dejavu = false;
@@ -27,7 +28,7 @@ export const useHttp = () => {
           headers["Content-Type"] = "application/json";
         }
 
-        setLoading(true);
+        loader && setLoading(true);
 
         const request = async (): Promise<any> => {
           headers["authorization"] = `Bearer ${localStorage.getItem(
@@ -46,6 +47,7 @@ export const useHttp = () => {
           }
 
           if (response.status === 403) {
+            setError("Blocked");
             return await logout();
           }
 
@@ -73,6 +75,8 @@ export const useHttp = () => {
 
         let response = await request();
 
+        if (!response) return;
+
         const data = await response!.json();
 
         if (!response!.ok) {
@@ -83,7 +87,7 @@ export const useHttp = () => {
 
         return data;
       } catch (e: any) {
-        console.log(e.message);
+        console.log(e);
         setError(e.message);
       } finally {
         setLoading(false);

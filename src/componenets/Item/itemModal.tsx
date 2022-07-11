@@ -1,3 +1,4 @@
+/* eslint-disable array-callback-return */
 import {
   Box,
   Button,
@@ -24,6 +25,7 @@ import { EditItem } from "./editItem";
 import { Markup } from "interweave";
 import { useConvert } from "../../hooks/additionalFields";
 import { TagItem } from "../TagItem";
+import { useActions } from "../../hooks/redux/useActions";
 
 export const ItemModal: React.FC<{
   item: IItem | undefined;
@@ -42,6 +44,7 @@ export const ItemModal: React.FC<{
   setcollection,
   AdditionalField,
 }) => {
+  const actions = useActions();
   const app = useTypedSelector((s) => s.app);
   const [edit, setedit] = useState<boolean>(false);
   const [comment, setcomment] = useState("");
@@ -71,10 +74,36 @@ export const ItemModal: React.FC<{
 
   useEffect(() => {
     if (item) {
+      console.log(item.AdditionalFieldsValue);
       setadditionalfields(toEdit(AdditionalField, item.AdditionalFieldsValue));
+
+      setcomments(item.Comments || []);
       return;
     }
     setcomments([]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [item]);
+
+  useEffect(() => {
+    (async function () {
+      if (item) {
+        const refresh = async () => {
+          const comments = await http(
+            `/collection/getComments/${item.id}`,
+            "GET",
+            null,
+            {},
+            false,
+            true
+          );
+          console.log(comments);
+          setcomments(comments || []);
+        };
+
+        actions.setRefreshComment(setInterval(refresh, 5000));
+      }
+      clearInterval(app.refreshComments);
+    })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [item]);
 
@@ -100,7 +129,7 @@ export const ItemModal: React.FC<{
         <DialogContent>
           <Box>
             <Grid container justifyContent="center" spacing={2}>
-              {app.user && app.user.id === +UserId && (
+              {app.user && (app.user.id === +UserId || app.user.admin) && (
                 <Grid item container>
                   <IconButton
                     onClick={() => setedit(false)}
@@ -120,7 +149,7 @@ export const ItemModal: React.FC<{
                 </Grid>
               )}
 
-              {app.user && app.user.id === UserId && edit ? (
+              {app.user && edit ? (
                 <EditItem
                   AdditionalField={AdditionalField}
                   possibleTags={possibleTags}
@@ -217,26 +246,24 @@ export const ItemModal: React.FC<{
               )}
             </Grid>
             <Grid pt={4}>
-              {[...(item?.Comments || []), ...comments].map(
-                (comment: IComment, i: number) => (
-                  <Box
-                    pt={3}
-                    px={2}
-                    key={i}
-                    sx={{ display: "flex", justifyContent: "space-between" }}
-                  >
-                    <Typography variant="body2" color="text.secondary">
-                      {comment.text}
-                    </Typography>
-                    <Typography variant="body2" color="text.secondary">
-                      {date.format(
-                        new Date(comment.createdAt),
-                        "YYYY-MM-DD HH:mm:ss"
-                      )}
-                    </Typography>
-                  </Box>
-                )
-              )}
+              {comments.map((comment: IComment, i: number) => (
+                <Box
+                  pt={3}
+                  px={2}
+                  key={i}
+                  sx={{ display: "flex", justifyContent: "space-between" }}
+                >
+                  <Typography variant="body2" color="text.secondary">
+                    {comment.text}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    {date.format(
+                      new Date(comment.createdAt),
+                      "YYYY-MM-DD HH:mm:ss"
+                    )}
+                  </Typography>
+                </Box>
+              ))}
             </Grid>
             <Grid pt={4}>
               <Box
@@ -264,7 +291,7 @@ export const ItemModal: React.FC<{
                   sx={{ width: "100%", px: 4 }}
                   variant="standard"
                 />
-                <Button>{text.add[app.language]}</Button>
+                <Button type="submit">{text.add[app.language]}</Button>
               </Box>
             </Grid>
           </Box>

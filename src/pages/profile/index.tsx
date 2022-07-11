@@ -9,11 +9,6 @@ import { text } from "../../text";
 
 export const Profile: React.FC = (): any => {
   const { user, language } = useTypedSelector((s) => s.app);
-  const navigate = useNavigate();
-  useEffect(() => {
-    if (user?.admin) navigate("/admin");
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   return (
     <Box
@@ -34,7 +29,7 @@ export const Profile: React.FC = (): any => {
                 </Typography>
                 <Grid item container spacing={2} xs={12}>
                   {user!.Collections.map((collection: ICollection) => (
-                    <Grid item key={collection.id} xs={4}>
+                    <Grid item key={collection.id} md={4} xs={12}>
                       <CollectionCard collection={collection} />
                     </Grid>
                   ))}
