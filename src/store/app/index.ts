@@ -22,7 +22,7 @@ const initialState: appState = {
   server:
     process.env.NODE_ENV! === "development"
       ? "http://localhost:4000"
-      : "https://metafor.uz",
+      : "https://admiring-ramanujan.80-80-218-230.plesk.page",
   token: localStorage.getItem("course-project-token"),
   user: null,
   likedItems: {},

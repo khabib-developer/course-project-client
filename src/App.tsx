@@ -7,13 +7,12 @@ import {
   SnackbarWarning,
 } from "./componenets/snackBar";
 import { Pages } from "./routes";
-import { ThemeProvider, createTheme } from "@mui/material/styles";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useTypedSelector } from "./hooks/redux/useSelectedTypes";
 import { switchTheme } from "./interfaces";
 
 function App() {
   const app = useTypedSelector((s) => s.app);
-
   const darkTheme = createTheme({
     palette: {
       mode: app.darkTheme ? switchTheme.dark : switchTheme.light,
